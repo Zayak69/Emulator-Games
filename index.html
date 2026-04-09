@@ -107,7 +107,6 @@
         <a id="link-delta" href="#" class="btn btn-delta">▶ EJECUTAR JUEGO</a>
         <a id="link-download" href="#" class="btn btn-download">💾 DESCARGAR ROM</a>
 
-        <!-- CORRECCIÓN: Agregado el ID emu-info para que el script pueda escribir aquí -->
         <p id="emu-info">*Escanea un llavero NFC para comenzar.</p>
     </div>
 
@@ -119,19 +118,16 @@
         const gameData = {
             'zelda': {
                 title: 'THE MINISH CAP',
-                delta: 'delta://game/ZELDA_ID',
                 download: 'TU_LINK_DE_DRIVE_PARA_ZELDA',
                 img: 'zelda.jpg'
             },
             'pokemon': {
                 title: 'POKEMON EMERALD',
-                delta: 'delta://game/POKEMON_ID',
                 download: 'TU_LINK_DE_DRIVE_PARA_POKEMON',
                 img: 'pokemon.jpg'
             },
             'mario': {
                 title: 'SUPER MARIO BROS 3',
-                delta: 'delta://game/6bd518e85eb46a4252af07910f61036e84b020d1', 
                 download: 'https://1drv.ms/u/c/5a0cb820aff9991d/IQCUjCem2t15SK-zycpOznVpAY3dv_NJFoqMM0yO2GQUVoE',
                 img: 'mario3.jpg'
             },
@@ -151,14 +147,15 @@
             const btnEjecutar = document.getElementById('link-delta');
             const infoTexto = document.getElementById('emu-info');
 
+            // USAMOS EL LINK DE DESCARGA PARA AMBOS PARA EVITAR ERRORES DE SISTEMA
+            btnEjecutar.href = selected.download; 
+
             if (isIOS) {
-                btnEjecutar.innerText = '▶ EJECUTAR EN DELTA';
-                btnEjecutar.href = selected.delta;
-                infoTexto.innerHTML = '*Debes tener <a href="https://apps.apple.com/us/app/delta-game-emulator/id6448201096" style="color: #ffde00;">Delta</a> instalado en tu iOS.';
+                btnEjecutar.innerText = '▶ ABRIR EN DELTA';
+                infoTexto.innerHTML = '*Descarga el archivo y selecciónalo en <a href="https://apps.apple.com/us/app/delta-game-emulator/id6448201096" style="color: #ffde00;">Delta</a>.';
             } else {
-                btnEjecutar.innerText = '▶ EJECUTAR EN LEMUROID';
-                btnEjecutar.href = selected.download; 
-                infoTexto.innerHTML = '*Debes tener <a href="https://play.google.com/store/apps/details?id=com.swordfish.lemuroid" style="color: #ffde00;">Lemuroid</a> instalado en tu Android.';
+                btnEjecutar.innerText = '▶ ABRIR EN LEMUROID';
+                infoTexto.innerHTML = '*Descarga el archivo y selecciónalo en <a href="https://play.google.com/store/apps/details?id=com.swordfish.lemuroid" style="color: #ffde00;">Lemuroid</a>.';
             }
 
             document.getElementById('link-download').href = selected.download;
