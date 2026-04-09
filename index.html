@@ -52,8 +52,8 @@
         }
 
         .game-art {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             background: #444;
             margin: 0 auto 15px;
             border: 4px solid #fff;
@@ -90,64 +90,36 @@
 
         .btn:active { transform: translateY(3px); box-shadow: none; }
 
-        /* Botón de Ejecutar (Rojo) */
-        .btn-run { 
-            background-color: var(--nintendo-red); 
-            color: white; 
-            box-shadow: 0 4px 0 #a0000d;
-        }
+        .btn-run { background-color: var(--nintendo-red); color: white; box-shadow: 0 4px 0 #a0000d; }
+        .btn-rom { background-color: var(--button-blue); color: white; box-shadow: 0 4px 0 #004a87; }
+        .btn-store { background-color: var(--button-grey); color: white; box-shadow: 0 4px 0 #333; font-size: 11px; }
 
-        /* Botón de Descargar (Azul) */
-        .btn-rom { 
-            background-color: var(--button-blue); 
-            color: white; 
-            box-shadow: 0 4px 0 #004a87;
-        }
-
-        /* Botón de Tienda (Gris) */
-        .btn-store { 
-            background-color: var(--button-grey); 
-            color: white; 
-            box-shadow: 0 4px 0 #333;
-        }
-
-        .footer {
-            font-size: 9px;
-            margin-top: 15px;
-            color: #666;
-            letter-spacing: 1px;
-        }
-
-        .note {
-            font-size: 9px;
-            color: #888;
-            margin-top: 10px;
-            line-height: 1.3;
-        }
+        .note { font-size: 9px; color: #888; margin-top: 10px; line-height: 1.3; font-style: italic; }
+        .footer { font-size: 9px; margin-top: 15px; color: #666; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
     <div class="card">
         <div class="screen">
-            <div id="game-title">CARGANDO...</div>
+            <div id="game-title">IDENTIFICANDO JUEGO...</div>
         </div>
 
         <div class="game-art">
-            <img id="game-image" src="https://via.placeholder.com/150?text=GAME" alt="Portada">
+            <img id="game-image" src="https://via.placeholder.com/150?text=KEYCAP" alt="Portada">
         </div>
 
-        <!-- Botón Principal: Ejecución -->
-        <a id="btn-run" href="#" class="btn btn-run">▶ JUGAR AHORA</a>
+        <!-- ACCIÓN PRINCIPAL -->
+        <a id="btn-run" href="#" class="btn btn-run">▶ ABRIR EMULADOR</a>
 
-        <!-- Botón Paso 1: Obtener la ROM -->
+        <!-- PASO 1 -->
         <a id="btn-rom" href="#" class="btn btn-rom">💾 1. DESCARGAR JUEGO</a>
 
-        <!-- Botón Paso 2: Obtener la App -->
+        <!-- PASO 2 -->
         <a id="btn-store" href="#" class="btn btn-store">📱 2. INSTALAR APP</a>
 
         <div class="note">
-            *Primero descarga el juego de OneDrive, luego instálalo en el emulador.
+            *Instrucciones: Descarga el juego (Paso 1), instala la app (Paso 2) y abre el archivo con el emulador.
         </div>
     </div>
 
@@ -156,6 +128,7 @@
     </div>
 
     <script>
+        // BASE DE DATOS DE JUEGOS
         const gameData = {
             'mario': {
                 title: 'SUPER MARIO BROS 3',
@@ -164,11 +137,12 @@
             },
             'zelda': {
                 title: 'THE MINISH CAP',
-                download: 'TU_LINK_ZELDA',
+                download: 'TU_LINK_DE_ONEDRIVE_ZELDA',
                 img: 'zelda.jpg'
             }
         };
 
+        // LÓGICA DE DETECCIÓN
         const urlParams = new URLSearchParams(window.location.search);
         const gameKey = urlParams.get('game');
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -182,23 +156,23 @@
             const btnRom = document.getElementById('btn-rom');
             const btnStore = document.getElementById('btn-store');
 
-            // Enlace de OneDrive común para ambos
+            // Enlace de descarga de OneDrive
             btnRom.href = selected.download;
 
             if (isIOS) {
-                // Configuración iPhone
-                btnRun.innerText = "▶ ABRIR EN DELTA";
+                // Configuración para iPhone (Delta)
                 btnRun.href = "delta://"; 
-                btnStore.innerText = "📱 INSTALAR DELTA";
                 btnStore.href = "https://apps.apple.com/mx/app/delta-game-emulator/id1048524688?l=en-GB";
+                btnStore.innerText = "📱 2. INSTALAR DELTA (iOS)";
             } else {
-                // Configuración Android (Lemuroid)
-                btnRun.innerText = "▶ ABRIR LEMUROID";
-                // Intent nativo para abrir la app instalada
-                btnRun.href = "intent://#Intent;scheme=lemuroid;package=com.swordfish.lemuroid;end";
-                btnStore.innerText = "📱 INSTALAR LEMUROID";
+                // Configuración para Android (Lemuroid)
+                // Intent corregido para forzar apertura de la app si ya está instalada
+                btnRun.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.swordfish.lemuroid;end";
                 btnStore.href = "https://play.google.com/store/apps/details?id=com.swordfish.lemuroid";
+                btnStore.innerText = "📱 2. INSTALAR LEMUROID (Android)";
             }
+        } else {
+            document.getElementById('game-title').innerText = "ERROR: NO GAME FOUND";
         }
     </script>
 </body>
