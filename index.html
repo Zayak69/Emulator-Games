@@ -10,6 +10,7 @@
             --lcd-green: #9bbc0f;
             --dark-grey: #2d2d2d;
             --button-grey: #555;
+            --button-blue: #0072ce;
         }
 
         body {
@@ -29,22 +30,45 @@
             background: var(--dark-grey);
             border: 4px solid #444;
             border-radius: 20px;
-            padding: 25px;
+            padding: 20px;
             width: 100%;
             max-width: 360px;
             box-shadow: 0 12px 0 #000;
             text-align: center;
+            box-sizing: border-box;
         }
 
         .screen {
             background-color: var(--lcd-green);
             color: #0f380f;
-            padding: 15px;
+            padding: 12px;
             border-radius: 5px;
             border: 6px solid #111;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: bold;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+        }
+
+        /* Restaurada y optimizada la imagen */
+        .game-art {
+            width: 120px;
+            height: 120px;
+            background: #444;
+            margin: 0 auto 15px;
+            border: 4px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 5px;
+            box-shadow: 0 4px 0 #000;
+        }
+
+        .game-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .btn {
@@ -52,11 +76,11 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 15px;
-            margin: 12px 0;
+            padding: 12px;
+            margin: 8px 0;
             border: none;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             text-decoration: none;
             text-transform: uppercase;
@@ -64,48 +88,42 @@
             box-sizing: border-box;
         }
 
-        .btn:active { transform: translateY(4px); box-shadow: none; }
+        .btn:active { transform: translateY(3px); box-shadow: none; }
 
         /* Botón 1: EJECUTAR (Rojo - Acción principal) */
         .btn-run { 
             background-color: var(--nintendo-red); 
             color: white; 
-            box-shadow: 0 5px 0 #a0000d;
+            box-shadow: 0 4px 0 #a0000d;
         }
 
-        /* Botón 2: DESCARGAR (Azul - Contenido) */
+        /* Botón 2: DESCARGAR (Azul - Contenido OneDrive) */
         .btn-rom { 
-            background-color: #0072ce; 
+            background-color: var(--button-blue); 
             color: white; 
-            box-shadow: 0 5px 0 #004a87;
+            box-shadow: 0 4px 0 #004a87;
         }
 
-        /* Botón 3: INSTALAR (Gris - Utilidad) */
+        /* Botón 3: INSTALAR (Gris - Utilidad App Store/Play Store) */
         .btn-store { 
             background-color: var(--button-grey); 
             color: white; 
-            box-shadow: 0 5px 0 #333;
-            font-size: 12px;
+            box-shadow: 0 4px 0 #333;
+            font-size: 11px;
         }
 
-        .footer { font-size: 10px; margin-top: 20px; color: #666; letter-spacing: 1px; }
-
-        .divider {
-            height: 2px;
-            background: #444;
-            margin: 20px 0;
-            position: relative;
+        .footer {
+            font-size: 9px;
+            margin-top: 15px;
+            color: #666;
+            letter-spacing: 1px;
         }
-        .divider::after {
-            content: "SOPORTE";
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--dark-grey);
-            padding: 0 10px;
-            font-size: 10px;
-            color: #888;
+
+        .instruction-note {
+            font-size: 9px;
+            color: #999;
+            margin-top: 10px;
+            line-height: 1.2;
         }
     </style>
 </head>
@@ -113,23 +131,21 @@
 
     <div class="card">
         <div class="screen">
-            <div style="font-size: 10px; opacity: 0.7;">INSERT COIN...</div>
             <div id="game-title">CARGANDO JUEGO</div>
         </div>
 
-        <!-- BOTÓN DE EJECUCIÓN (Solo si ya tienen todo) -->
+        <div class="game-art">
+            <img id="game-image" src="https://via.placeholder.com/150?text=SCANNER" alt="Portada">
+        </div>
+
         <a id="btn-run" href="#" class="btn btn-run">▶ EJECUTAR AHORA</a>
 
-        <div class="divider"></div>
-
-        <!-- BOTÓN DE DESCARGA (Para obtener tu archivo de OneDrive) -->
         <a id="btn-rom" href="#" class="btn btn-rom">💾 1. DESCARGAR JUEGO</a>
 
-        <!-- BOTÓN DE TIENDA (Para los que no tienen la app) -->
         <a id="btn-store" href="#" class="btn btn-store">📱 2. INSTALAR EMULADOR</a>
 
-        <p style="font-size: 10px; color: #999; margin-top: 15px;">
-            *Descarga el juego y ábrelo con el emulador.
+        <p class="instruction-note">
+            Si "EJECUTAR" falla, primero usa el Paso 1 y 2.
         </p>
     </div>
 
@@ -138,13 +154,25 @@
     </div>
 
     <script>
+        // CONFIGURACIÓN DE TUS JUEGOS
         const gameData = {
+            'zelda': {
+                title: 'THE MINISH CAP',
+                download: 'TU_LINK_DE_DRIVE_PARA_ZELDA',
+                img: 'zelda.jpg'
+            },
+            'pokemon': {
+                title: 'POKEMON EMERALD',
+                download: 'TU_LINK_DE_DRIVE_PARA_POKEMON',
+                img: 'pokemon.jpg'
+            },
             'mario': {
                 title: 'SUPER MARIO BROS 3',
+                // Tu link de OneDrive
                 download: 'https://1drv.ms/u/c/5a0cb820aff9991d/IQCUjCem2t15SK-zycpOznVpAY3dv_NJFoqMM0yO2GQUVoE',
                 img: 'mario3.jpg'
             },
-            // Aquí puedes añadir más juegos fácilmente
+            // Añade más aquí siguiendo el mismo formato
         };
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -154,26 +182,28 @@
         if (gameKey && gameData[gameKey]) {
             const selected = gameData[gameKey];
             document.getElementById('game-title').innerText = selected.title;
+            document.getElementById('game-image').src = selected.img;
 
             const btnRun = document.getElementById('btn-run');
             const btnRom = document.getElementById('btn-rom');
             const btnStore = document.getElementById('btn-store');
 
-            // Configuración de la ROM (OneDrive)
+            // Configuración del botón de Descarga (OneDrive)
             btnRom.href = selected.download;
 
             if (isIOS) {
                 // Configuración para iPhone
                 btnRun.href = "delta://"; 
                 btnRun.innerText = "▶ ABRIR EN DELTA";
+                // Link oficial App Store verificado
                 btnStore.href = "https://apps.apple.com/mx/app/delta-game-emulator/id1048524688?l=en-GB";
-                btnStore.innerText = "📱 OBTENER DELTA (APP STORE)";
+                btnStore.innerText = "📱 INSTALAR DELTA (APP STORE)";
             } else {
                 // Configuración para Android
                 btnRun.href = "#"; // Generalmente Android abre la ROM tras descargar
                 btnRun.innerText = "▶ JUGAR AHORA";
                 btnStore.href = "https://play.google.com/store/apps/details?id=com.swordfish.lemuroid";
-                btnStore.innerText = "📱 OBTENER LEMUROID (PLAY STORE)";
+                btnStore.innerText = "📱 INSTALAR LEMUROID (PLAY STORE)";
             }
         }
     </script>
