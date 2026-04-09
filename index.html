@@ -86,23 +86,18 @@
         .btn:active { transform: translateY(4px); }
 
         .btn-primary { background-color: var(--nintendo-red); color: white; }
+        .btn-download { background-color: #eee; color: #333; }
 
         .footer { font-size: 10px; margin-top: 20px; color: #777; }
         
         .emu-box {
             margin-top: 15px;
-            padding: 12px;
+            padding: 10px;
             border: 1px dashed #555;
             border-radius: 8px;
             background: #252525;
-        }
-        .emu-link {
-            color: #ffde00;
-            font-weight: bold;
-            text-decoration: underline;
-            display: block;
-            margin-top: 8px;
-            font-size: 13px;
+            font-size: 11px;
+            color: #aaa;
         }
     </style>
 </head>
@@ -118,11 +113,14 @@
             <img id="game-image" src="https://via.placeholder.com/150?text=ESCANEA+NFC" alt="Portada">
         </div>
 
-        <!-- Botón único de acción para evitar confusiones y errores de Safari -->
-        <a id="btn-main" href="#" class="btn btn-primary">▶ OBTENER JUEGO</a>
+        <!-- Botón 1: Ir a la App Store / Play Store -->
+        <a id="btn-store" href="#" class="btn btn-primary">1. INSTALAR EMULADOR</a>
 
-        <div id="emu-helper" class="emu-box">
-            <span style="font-size: 11px; color: #aaa;">*Escanea un llavero NFC para comenzar.</span>
+        <!-- Botón 2: Descargar el Juego -->
+        <a id="btn-rom" href="#" class="btn btn-download">2. DESCARGAR JUEGO</a>
+
+        <div class="emu-box">
+            *Primero instala el emulador y luego descarga el juego para abrirlo.
         </div>
     </div>
 
@@ -160,28 +158,20 @@
             document.getElementById('status-text').innerText = 'JUEGO DETECTADO:';
             document.getElementById('game-image').src = selected.img;
 
-            const btnMain = document.getElementById('btn-main');
-            const emuHelper = document.getElementById('emu-helper');
+            const btnStore = document.getElementById('btn-store');
+            const btnRom = document.getElementById('btn-rom');
 
-            // Siempre usamos el link de descarga directa para evitar errores de Safari
-            btnMain.href = selected.download;
+            // Configuramos el botón de descarga del juego
+            btnRom.href = selected.download;
 
             if (isIOS) {
-                btnMain.innerText = '▶ DESCARGAR PARA DELTA';
-                emuHelper.innerHTML = `
-                    <span style="font-size: 11px; color: #aaa;">¿No tienes el emulador?</span><br>
-                    <a href="https://apps.apple.com/us/app/delta-game-emulator/id6448201096" class="emu-link">
-                        INSTALAR DELTA (APP STORE)
-                    </a>
-                `;
+                // Usamos el link que me pasaste para iPhone
+                btnStore.innerText = '1. INSTALAR DELTA';
+                btnStore.href = "https://apps.apple.com/mx/app/delta-game-emulator/id1048524688?l=en-GB";
             } else {
-                btnMain.innerText = '▶ DESCARGAR PARA LEMUROID';
-                emuHelper.innerHTML = `
-                    <span style="font-size: 11px; color: #aaa;">¿No tienes el emulador?</span><br>
-                    <a href="https://play.google.com/store/apps/details?id=com.swordfish.lemuroid" class="emu-link">
-                        INSTALAR LEMUROID (PLAY STORE)
-                    </a>
-                `;
+                // Link para Android
+                btnStore.innerText = '1. INSTALAR LEMUROID';
+                btnStore.href = "https://play.google.com/store/apps/details?id=com.swordfish.lemuroid";
             }
         }
     </script>
