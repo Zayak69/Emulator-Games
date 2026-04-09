@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Keycap Launcher</title>
+    <style>
+        :root {
+            --primary: #30cfd0;
+            --secondary: #330867;
+            --nintendo-red: #e60012;
+            --lcd-green: #9bbc0f;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .card {
+            background: #2d2d2d;
+            border: 4px solid #555;
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 350px;
+            box-shadow: 0 10px 0 #000;
+            text-align: center;
+        }
+
+        .screen {
+            background-color: var(--lcd-green);
+            color: #0f380f;
+            padding: 15px;
+            border-radius: 5px;
+            border: 8px solid #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .game-art {
+            width: 150px;
+            height: 150px;
+            background: #444;
+            margin: 0 auto 15px;
+            border: 4px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .game-art img { width: 100%; height: 100%; object-fit: cover; }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-sizing: border-box;
+        }
+
+        .btn:active { transform: translateY(4px); }
+
+        .btn-delta { background-color: var(--nintendo-red); color: white; }
+        .btn-download { background-color: #eee; color: #333; }
+
+        .footer { font-size: 10px; margin-top: 20px; color: #777; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="screen">
+            <div id="status-text" style="font-size: 10px; margin-bottom: 5px;">SISTEMA LISTO...</div>
+            <div id="game-title">SELECCIONE JUEGO</div>
+        </div>
+
+        <div class="game-art">
+            <img id="game-image" src="https://via.placeholder.com/150?text=ESCANEA+NFC" alt="Portada">
+        </div>
+
+        <a id="link-delta" href="#" class="btn btn-delta">▶ EJECUTAR EN DELTA</a>
+        <a id="link-download" href="#" class="btn btn-download">💾 DESCARGAR ROM</a>
+
+        <p style="font-size: 11px; margin-top: 15px; color: #aaa;">
+            *Debes tener el emulador Delta instalado.
+        </p>
+    </div>
+
+    <div class="footer">
+        RETRO KEYCAPS PROJECT © 2026
+    </div>
+
+    <script>
+        // CONFIGURACIÓN DE TUS JUEGOS
+        // Aquí puedes agregar todos los que quieras
+        const gameData = {
+            'mario': {
+                title: 'SUPER MARIO WORLD',
+                delta: 'delta://game/SMW_ID',
+                download: 'TU_LINK_DE_DRIVE_PARA_MARIO',
+                img: 'mario.jpg'
+            },
+            'zelda': {
+                title: 'THE MINISH CAP',
+                delta: 'delta://game/ZELDA_ID',
+                download: 'TU_LINK_DE_DRIVE_PARA_ZELDA',
+                img: 'zelda.jpg'
+            },
+            'pokemon': {
+                title: 'POKEMON EMERALD',
+                delta: 'delta://game/POKEMON_ID',
+                download: 'TU_LINK_DE_DRIVE_PARA_POKEMON',
+                img: 'pokemon.jpg'
+            }
+        };
+
+        // Lógica para detectar el juego desde el link del NFC (?game=nombre)
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameKey = urlParams.get('game');
+
+        if (gameKey && gameData[gameKey]) {
+            const selected = gameData[gameKey];
+            document.getElementById('game-title').innerText = selected.title;
+            document.getElementById('status-text').innerText = 'JUEGO DETECTADO:';
+            document.getElementById('link-delta').href = selected.delta;
+            document.getElementById('link-download').href = selected.download;
+            document.getElementById('game-image').src = selected.img;
+        }
+    </script>
+
+</body>
+</html>
