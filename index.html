@@ -80,6 +80,7 @@
             cursor: pointer;
             transition: transform 0.1s;
             box-sizing: border-box;
+            text-align: center;
         }
 
         .btn:active { transform: translateY(4px); }
@@ -88,6 +89,7 @@
         .btn-download { background-color: #eee; color: #333; }
 
         .footer { font-size: 10px; margin-top: 20px; color: #777; }
+        #emu-info { font-size: 11px; margin-top: 15px; color: #aaa; }
     </style>
 </head>
 <body>
@@ -102,12 +104,11 @@
             <img id="game-image" src="https://via.placeholder.com/150?text=ESCANEA+NFC" alt="Portada">
         </div>
 
-        <a id="link-delta" href="#" class="btn btn-delta">▶ EJECUTAR EN DELTA</a>
+        <a id="link-delta" href="#" class="btn btn-delta">▶ EJECUTAR JUEGO</a>
         <a id="link-download" href="#" class="btn btn-download">💾 DESCARGAR ROM</a>
 
-        <p style="font-size: 11px; margin-top: 15px; color: #aaa;">
-            *Debes tener el emulador Delta instalado.
-        </p>
+        <!-- CORRECCIÓN: Agregado el ID emu-info para que el script pueda escribir aquí -->
+        <p id="emu-info">*Escanea un llavero NFC para comenzar.</p>
     </div>
 
     <div class="footer">
@@ -115,8 +116,6 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN DE TUS JUEGOS
-        // Aquí puedes agregar todos los que quieras
         const gameData = {
             'zelda': {
                 title: 'THE MINISH CAP',
@@ -138,19 +137,32 @@
             },
         };
 
-        // Lógica para detectar el juego desde el link del NFC (?game=nombre)
         const urlParams = new URLSearchParams(window.location.search);
         const gameKey = urlParams.get('game');
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
         if (gameKey && gameData[gameKey]) {
             const selected = gameData[gameKey];
+            
             document.getElementById('game-title').innerText = selected.title;
             document.getElementById('status-text').innerText = 'JUEGO DETECTADO:';
-            document.getElementById('link-delta').href = selected.delta;
-            document.getElementById('link-download').href = selected.download;
             document.getElementById('game-image').src = selected.img;
+
+            const btnEjecutar = document.getElementById('link-delta');
+            const infoTexto = document.getElementById('emu-info');
+
+            if (isIOS) {
+                btnEjecutar.innerText = '▶ EJECUTAR EN DELTA';
+                btnEjecutar.href = selected.delta;
+                infoTexto.innerHTML = '*Debes tener <a href="https://apps.apple.com/us/app/delta-game-emulator/id6448201096" style="color: #ffde00;">Delta</a> instalado en tu iOS.';
+            } else {
+                btnEjecutar.innerText = '▶ EJECUTAR EN LEMUROID';
+                btnEjecutar.href = selected.download; 
+                infoTexto.innerHTML = '*Debes tener <a href="https://play.google.com/store/apps/details?id=com.swordfish.lemuroid" style="color: #ffde00;">Lemuroid</a> instalado en tu Android.';
+            }
+
+            document.getElementById('link-download').href = selected.download;
         }
     </script>
-
 </body>
 </html>
