@@ -74,7 +74,7 @@
             margin: 10px 0;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             text-decoration: none;
             cursor: pointer;
@@ -85,19 +85,20 @@
 
         .btn:active { transform: translateY(4px); }
 
-        .btn-primary { background-color: var(--nintendo-red); color: white; }
-        .btn-download { background-color: #eee; color: #333; }
+        .btn-step1 { background-color: var(--nintendo-red); color: white; border-bottom: 4px solid #a0000d; }
+        .btn-step2 { background-color: #eee; color: #333; border-bottom: 4px solid #bbb; }
 
         .footer { font-size: 10px; margin-top: 20px; color: #777; }
         
-        .emu-box {
+        .instruction-box {
             margin-top: 15px;
-            padding: 10px;
+            padding: 12px;
             border: 1px dashed #555;
             border-radius: 8px;
             background: #252525;
             font-size: 11px;
-            color: #aaa;
+            color: #ccc;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -113,14 +114,17 @@
             <img id="game-image" src="https://via.placeholder.com/150?text=ESCANEA+NFC" alt="Portada">
         </div>
 
-        <!-- Botón 1: Ir a la App Store / Play Store -->
-        <a id="btn-store" href="#" class="btn btn-primary">1. INSTALAR EMULADOR</a>
+        <!-- PASO 1: INSTALAR APP -->
+        <a id="btn-install" href="#" class="btn btn-step1">1. INSTALAR EMULADOR</a>
 
-        <!-- Botón 2: Descargar el Juego -->
-        <a id="btn-rom" href="#" class="btn btn-download">2. DESCARGAR JUEGO</a>
+        <!-- PASO 2: DESCARGAR ROM -->
+        <a id="btn-download" href="#" class="btn btn-step2">2. DESCARGAR JUEGO</a>
 
-        <div class="emu-box">
-            *Primero instala el emulador y luego descarga el juego para abrirlo.
+        <div class="instruction-box">
+            <strong>¿CÓMO JUGAR?</strong><br>
+            1. Instala el emulador si no lo tienes.<br>
+            2. Descarga el juego.<br>
+            3. Abre el archivo descargado con la App.
         </div>
     </div>
 
@@ -158,20 +162,20 @@
             document.getElementById('status-text').innerText = 'JUEGO DETECTADO:';
             document.getElementById('game-image').src = selected.img;
 
-            const btnStore = document.getElementById('btn-store');
-            const btnRom = document.getElementById('btn-rom');
+            const btnInstall = document.getElementById('btn-install');
+            const btnDownload = document.getElementById('btn-download');
 
-            // Configuramos el botón de descarga del juego
-            btnRom.href = selected.download;
+            // Configuramos el link de descarga del juego (Paso 2)
+            btnDownload.href = selected.download;
 
             if (isIOS) {
-                // Usamos el link que me pasaste para iPhone
-                btnStore.innerText = '1. INSTALAR DELTA';
-                btnStore.href = "https://apps.apple.com/mx/app/delta-game-emulator/id1048524688?l=en-GB";
+                // Configuramos el Paso 1 para iPhone con tu link verificado
+                btnInstall.innerText = '1. INSTALAR DELTA';
+                btnInstall.href = "https://apps.apple.com/mx/app/delta-game-emulator/id1048524688?l=en-GB";
             } else {
-                // Link para Android
-                btnStore.innerText = '1. INSTALAR LEMUROID';
-                btnStore.href = "https://play.google.com/store/apps/details?id=com.swordfish.lemuroid";
+                // Configuramos el Paso 1 para Android
+                btnInstall.innerText = '1. INSTALAR LEMUROID';
+                btnInstall.href = "https://play.google.com/store/apps/details?id=com.swordfish.lemuroid";
             }
         }
     </script>
