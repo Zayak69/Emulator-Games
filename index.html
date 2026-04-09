@@ -6,10 +6,10 @@
     <title>Retro Keycap Launcher</title>
     <style>
         :root {
-            --primary: #30cfd0;
-            --secondary: #330867;
             --nintendo-red: #e60012;
             --lcd-green: #9bbc0f;
+            --dark-grey: #2d2d2d;
+            --button-grey: #555;
         }
 
         body {
@@ -26,13 +26,13 @@
         }
 
         .card {
-            background: #2d2d2d;
-            border: 4px solid #555;
-            border-radius: 15px;
-            padding: 20px;
+            background: var(--dark-grey);
+            border: 4px solid #444;
+            border-radius: 20px;
+            padding: 25px;
             width: 100%;
-            max-width: 350px;
-            box-shadow: 0 10px 0 #000;
+            max-width: 360px;
+            box-shadow: 0 12px 0 #000;
             text-align: center;
         }
 
@@ -41,64 +41,71 @@
             color: #0f380f;
             padding: 15px;
             border-radius: 5px;
-            border: 8px solid #333;
+            border: 6px solid #111;
             margin-bottom: 20px;
             font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
         }
 
-        .game-art {
-            width: 150px;
-            height: 150px;
-            background: #444;
-            margin: 0 auto 15px;
-            border: 4px solid #fff;
+        .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            border-radius: 5px;
-        }
-
-        .game-art img { width: 100%; height: 100%; object-fit: cover; }
-
-        .btn {
-            display: block;
             width: 100%;
             padding: 15px;
-            margin: 10px 0;
+            margin: 12px 0;
             border: none;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: bold;
             text-decoration: none;
-            cursor: pointer;
-            transition: transform 0.1s;
+            text-transform: uppercase;
+            transition: all 0.1s;
             box-sizing: border-box;
-            text-align: center;
         }
 
-        .btn:active { transform: translateY(4px); }
+        .btn:active { transform: translateY(4px); box-shadow: none; }
 
-        .btn-step1 { background-color: var(--nintendo-red); color: white; border-bottom: 4px solid #a0000d; }
-        .btn-step2 { background-color: #eee; color: #333; border-bottom: 4px solid #bbb; }
+        /* Botón 1: EJECUTAR (Rojo - Acción principal) */
+        .btn-run { 
+            background-color: var(--nintendo-red); 
+            color: white; 
+            box-shadow: 0 5px 0 #a0000d;
+        }
 
-        .footer { font-size: 10px; margin-top: 20px; color: #777; }
-        
-        .instruction-box {
-            margin-top: 15px;
-            padding: 12px;
-            border: 1px dashed #555;
-            border-radius: 8px;
-            background: #252525;
-            font-size: 11px;
-            color: #ccc;
-            line-height: 1.4;
+        /* Botón 2: DESCARGAR (Azul - Contenido) */
+        .btn-rom { 
+            background-color: #0072ce; 
+            color: white; 
+            box-shadow: 0 5px 0 #004a87;
+        }
+
+        /* Botón 3: INSTALAR (Gris - Utilidad) */
+        .btn-store { 
+            background-color: var(--button-grey); 
+            color: white; 
+            box-shadow: 0 5px 0 #333;
+            font-size: 12px;
+        }
+
+        .footer { font-size: 10px; margin-top: 20px; color: #666; letter-spacing: 1px; }
+
+        .divider {
+            height: 2px;
+            background: #444;
+            margin: 20px 0;
+            position: relative;
+        }
+        .divider::after {
+            content: "SOPORTE";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark-grey);
+            padding: 0 10px;
+            font-size: 10px;
+            color: #888;
         }
     </style>
 </head>
@@ -106,49 +113,38 @@
 
     <div class="card">
         <div class="screen">
-            <div id="status-text" style="font-size: 10px; margin-bottom: 5px;">SISTEMA LISTO...</div>
-            <div id="game-title">SELECCIONE JUEGO</div>
+            <div style="font-size: 10px; opacity: 0.7;">INSERT COIN...</div>
+            <div id="game-title">CARGANDO JUEGO</div>
         </div>
 
-        <div class="game-art">
-            <img id="game-image" src="https://via.placeholder.com/150?text=ESCANEA+NFC" alt="Portada">
-        </div>
+        <!-- BOTÓN DE EJECUCIÓN (Solo si ya tienen todo) -->
+        <a id="btn-run" href="#" class="btn btn-run">▶ EJECUTAR AHORA</a>
 
-        <!-- PASO 1: INSTALAR APP -->
-        <a id="btn-install" href="#" class="btn btn-step1">1. INSTALAR EMULADOR</a>
+        <div class="divider"></div>
 
-        <!-- PASO 2: DESCARGAR ROM -->
-        <a id="btn-download" href="#" class="btn btn-step2">2. DESCARGAR JUEGO</a>
+        <!-- BOTÓN DE DESCARGA (Para obtener tu archivo de OneDrive) -->
+        <a id="btn-rom" href="#" class="btn btn-rom">💾 1. DESCARGAR JUEGO</a>
 
-        <div class="instruction-box">
-            <strong>¿CÓMO JUGAR?</strong><br>
-            1. Instala el emulador si no lo tienes.<br>
-            2. Descarga el juego.<br>
-            3. Abre el archivo descargado con la App.
-        </div>
+        <!-- BOTÓN DE TIENDA (Para los que no tienen la app) -->
+        <a id="btn-store" href="#" class="btn btn-store">📱 2. INSTALAR EMULADOR</a>
+
+        <p style="font-size: 10px; color: #999; margin-top: 15px;">
+            *Descarga el juego y ábrelo con el emulador.
+        </p>
     </div>
 
     <div class="footer">
-        RETRO KEYCAPS PROJECT © 2026
+        RETRO KEYCAPS • 3D PRINTED SERIES
     </div>
 
     <script>
         const gameData = {
-            'zelda': {
-                title: 'THE MINISH CAP',
-                download: 'TU_LINK_DE_DRIVE_PARA_ZELDA',
-                img: 'zelda.jpg'
-            },
-            'pokemon': {
-                title: 'POKEMON EMERALD',
-                download: 'TU_LINK_DE_DRIVE_PARA_POKEMON',
-                img: 'pokemon.jpg'
-            },
             'mario': {
                 title: 'SUPER MARIO BROS 3',
                 download: 'https://1drv.ms/u/c/5a0cb820aff9991d/IQCUjCem2t15SK-zycpOznVpAY3dv_NJFoqMM0yO2GQUVoE',
                 img: 'mario3.jpg'
             },
+            // Aquí puedes añadir más juegos fácilmente
         };
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -157,25 +153,27 @@
 
         if (gameKey && gameData[gameKey]) {
             const selected = gameData[gameKey];
-            
             document.getElementById('game-title').innerText = selected.title;
-            document.getElementById('status-text').innerText = 'JUEGO DETECTADO:';
-            document.getElementById('game-image').src = selected.img;
 
-            const btnInstall = document.getElementById('btn-install');
-            const btnDownload = document.getElementById('btn-download');
+            const btnRun = document.getElementById('btn-run');
+            const btnRom = document.getElementById('btn-rom');
+            const btnStore = document.getElementById('btn-store');
 
-            // Configuramos el link de descarga del juego (Paso 2)
-            btnDownload.href = selected.download;
+            // Configuración de la ROM (OneDrive)
+            btnRom.href = selected.download;
 
             if (isIOS) {
-                // Configuramos el Paso 1 para iPhone con tu link verificado
-                btnInstall.innerText = '1. INSTALAR DELTA';
-                btnInstall.href = "https://apps.apple.com/mx/app/delta-game-emulator/id1048524688?l=en-GB";
+                // Configuración para iPhone
+                btnRun.href = "delta://"; 
+                btnRun.innerText = "▶ ABRIR EN DELTA";
+                btnStore.href = "https://apps.apple.com/mx/app/delta-game-emulator/id1048524688?l=en-GB";
+                btnStore.innerText = "📱 OBTENER DELTA (APP STORE)";
             } else {
-                // Configuramos el Paso 1 para Android
-                btnInstall.innerText = '1. INSTALAR LEMUROID';
-                btnInstall.href = "https://play.google.com/store/apps/details?id=com.swordfish.lemuroid";
+                // Configuración para Android
+                btnRun.href = "#"; // Generalmente Android abre la ROM tras descargar
+                btnRun.innerText = "▶ JUGAR AHORA";
+                btnStore.href = "https://play.google.com/store/apps/details?id=com.swordfish.lemuroid";
+                btnStore.innerText = "📱 OBTENER LEMUROID (PLAY STORE)";
             }
         }
     </script>
